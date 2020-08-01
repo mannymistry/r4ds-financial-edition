@@ -1,0 +1,194 @@
+---
+title: "1. Introduction"
+author: "Mandip Mistry"
+date: "01/08/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#### 1. Intro
+ - Get up to speed on data exploration (look at data, rapidly generate hypotheses, test them - rinse repeat)
+ 
+ - Visualize - elegant informative plots
+ - Data transformation - filter, create new variables, compute summaries
+ - Exploratory analysis - combine transformation and visualization to answer interesting questions about them 
+ 
+ - Workflow Basics
+ - Workflow scripts
+ - Workflow projects
+ 
+ 
+#### 3 Data visualisation
+
+
+##### 3.1.1 Prerequisites
+
+Things you need running before you can start
+
+Load the tidyverse, PerformanceAnalytucs - contains all of the packages you need to do analysis 
+
+```{r}
+library(tidyverse)
+library(PerformanceAnalytics)
+```
+
+It also tells you which functions from the tidyverse conflict with functions in base R (or from other packages you might have loaded).
+
+Install it if you haven't already - (You can live code this)
+
+#### 3.2 First Steps - Create a graph
+
+Do long short equity fund managers share simillar return profile to the short selling fund, seeing how they both short stocks. What does the relationship between the managers looks like ? Positive 
+
+##### 3.2.1 The EDHEC data frame
+
+```{r}
+head(edhec)
+```
+
+##### 3.2.2 Creating a ggplot
+
+
+```{r}
+library(ggplot2)
+
+ggplot(data = fortify(edhec))+
+  geom_point(mapping = aes(x = edhec$`Long/Short Equity`, y = edhec$`Short Selling`))
+```
+
+The plot shows a negative relationship between Long/Short Equity funds and Short Selling Funds. In other words when long short equity funds make high returns short selling funds exhbit poor returns. 
+
+add more point to your graph using geom_point - will discuss this further in
+
+##### 3.2.3 A graphing template
+
+Let’s turn this code into a reusable template for making graphs with ggplot2. To make a graph, replace the bracketed sections in the code below with a dataset, a geom function, or a collection of mappings.
+
+`ggplot(data = <DATA>) + 
+  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))`
+  
+The rest of this chapter will show you how to complete and extend this template to make different types of graphs. We will begin with the <MAPPINGS> component.
+
+##### 3.2.4 Excercises
+
+1. Run `ggplot(data = fortify(edhec)). What do you see? - You see nothing 
+2. How many rows and columns are there in edhec
+3. Where does the edhec data set come from? Read the help to find out
+4. Make a scatter plot of Merger Arbitrage and Distressed Securties
+
+#### 3.3 Aesthetic mappings
+
+- You neeed to come back to this after
+- Bulk up the edhec data with some more classification data - something to date - Was this day a monday tuesday or was it an up month in SPX or the world etc etc
+- 
+
+#### 3.4 Common Problems
+
+- Here you may want to come up with common ggplot and xts problems
+- coredata, index etc, fortify
+- fill this in as you go 
+
+#### 3.5 Facets
+
+One way to add additional variables is with aesthetics. Another way, particularly useful for categorical variables, is to split your plot into facets, subplots that each display one subset of the data.
+
+TODO:
+- You need to tidy the data to beable to do any of this as well. 
+
+Add some excercises to this aswell 
+
+#### 3.6 Geometric Objects
+
+- A geom is the geometrical object that a plot uses to represent data. 
+-  People often describe plots by the type of geom that the plot uses. 
+ - For example, bar charts use bar geoms, line charts use line geoms, boxplots use boxplot geoms, and so on. Scatterplots break the trend; they use the point geom. 
+
+```{r}
+
+ggplot(data = fortify(edhec))+
+  geom_point(mapping = aes(x = edhec$`Long/Short Equity`, y = edhec$`Short Selling`))
+
+ggplot(data = fortify(edhec))+
+  geom_smooth(mapping = aes(x = edhec$`Long/Short Equity`, y = edhec$`Short Selling`))
+
+```
+
+On the other hand, you could set the linetype of a line. geom_smooth() will draw a different line, with a different linetype, for each unique value of the variable that you map to linetype. - You need to do this with the added variables
+
+ggplot2 provides over 40 geoms, and extension packages provide even more (see https://exts.ggplot2.tidyverse.org/gallery/ for a sampling). The best way to get a comprehensive overview is the ggplot2 cheatsheet, which you can find at http://rstudio.com/cheatsheets. To learn more about any single geom, use help: ?geom_smooth.
+
+
+```{r}
+
+ggplot(data = fortify(edhec))+
+  geom_point(mapping = aes(x = edhec$`Long/Short Equity`, y = edhec$`Short Selling`))+
+  geom_smooth(mapping = aes(x = edhec$`Long/Short Equity`, y = edhec$`Short Selling`))
+
+
+```
+
+Same as 
+
+```{r}
+
+ggplot(data = fortify(edhec), mapping = aes(x = edhec$`Long/Short Equity`, y = edhec$`Short Selling`))+
+  geom_point() + 
+  geom_smooth()
+  
+
+```
+
+If you place mappings in a geom function, ggplot2 will treat them as local mappings for the layer. It will use these mappings to extend or overwrite the global mappings for that layer only. This makes it possible to display different aesthetics in different layers.
+
+```{r}
+ggplot(data = fortify(edhec), mapping = aes(x = edhec$`Long/Short Equity`, y = edhec$`Short Selling`))+
+  geom_point(mapping = aes(color = Index)) + 
+  geom_smooth()
+  
+```
+
+You can use the same idea to specify different data for each layer. Here, our smooth line displays just a subset of the mpg dataset, the subcompact cars. The local data argument in geom_smooth() overrides the global data argument in ggplot() for that layer only.
+
+TODO: You will need to apply line types once you have beefed up the data set
+TODO: Add in the excercises
+
+#### 3.7 Statistical transformations
+
+Same situation you need a slight bit more of a beefed up dataset in order to have a meaningful data set
+
+```{r}
+
+ggplot(data = fortify(edhec)) + 
+  geom_bar(mapping = aes(x = edhec$`CTA Global`))
+
+```
+
+
+TODO: Excercises adjust them to the dataset 
+
+#### 3.8 Position adjustments
+
+Same situation most of the graphs need categorical variables which you need to add to your data set
+
+There are tonne of bar charts here you could do something on volatility contribution- have a dataset that does this
+
+```{r}
+ggplot(data = fortify(edhec))+
+  geom_point(mapping = aes(x = edhec$`Long/Short Equity`, y = edhec$`Short Selling`), position = "jitter")
+```
+
+#### 3.9 Position adjustments
+
+Coordinate systems are probably the most complicated part of ggplot2. The default coordinate system is the Cartesian coordinate system where the x and y positions act independently to determine the location of each point. There are a number of other coordinate systems that are occasionally helpful.
+
+```{r}
+ggplot(data = fortify(edhec), mapping = aes(x = edhec$`Long/Short Equity`, y = edhec$`Short Selling`)) + 
+  geom_boxplot()+
+  coord_flip()
+```
+
+####3.10 The layered grammar of graphics
