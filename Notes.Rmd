@@ -192,3 +192,66 @@ ggplot(data = fortify(edhec), mapping = aes(x = edhec$`Long/Short Equity`, y = e
 ```
 
 ####3.10 The layered grammar of graphics
+
+- Copy this exactly from the original book 
+
+#### 4 Workflow basic
+
+You can copy as much of what is exisiting for this as possible 
+
+- Creating objects and the assignment operator
+- naming conventions
+- calling functions how to use them and how to get help on them 
+- Introdouce the concept of a package - fundmaental unit of reproducible code 
+
+#### 5 Data Transformation 
+You will need a dataset for this that is a little more explanatory
+A more combined data set a stock and many more attributes on that day - 
+Maybe stock sentiment - market sentiment - number of cases of covid that day
+
+-  you could use the gap minder dataset - The data camp course had everything you needed
+- Maybe add the stock market returns for that year for that country
+- Or just take the USA - show how you combined the data set later
+
+```{r}
+library(PortfolioAnalytics)
+data("indexes")
+
+```
+
+#### 6 Workflow Scripts
+
+- How to use console 
+- Running Code and diagnostics
+- Adjust what you need to do here
+
+#### 7 Exploratory Data Analysis
+
+- you really do need to think this one out
+Generate questions about your data.
+Search for answers by visualising, transforming, and modelling your data.
+Use what you learn to refine your questions and/or generate new questions.
+
+EDA is a state of mind. During the initial phases of EDA you should feel free to investigate every idea that occurs to you. Some of these ideas will pan out, and some will be dead ends. As your exploration continues, you will home in on a few particularly productive areas that you’ll eventually write up and communicate to others.
+
+There is no rule about which questions you should ask to guide your research. However, two types of questions will always be useful for making discoveries within your data. You can loosely word these questions as:
+
+  What type of variation occurs within my variables?
+
+  What type of covariation occurs between my variables?
+
+
+```{r}
+library(PerformanceAnalytics)
+data("edhec")
+library(ggplot2)
+ggplot(fortify(edhec))+
+  geom_histogram(mapping = aes(x = edhec$`Convertible Arbitrage`))
+
+```
+returns are mostly centered around 0
+
+
+
+
+
